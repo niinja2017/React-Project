@@ -1,16 +1,16 @@
-const Search = () => {
+const Search = (props) => {
 
-    const changeHandler = (event) => {
-        console.log(event.target.value)
+    const change = (event) => {
+        props?.handlerSearch(event)
     }
-    // evnet.target.value : برای برگرداندن مقدار درون ریترن
-
     return (
         <div>
-            <label htmlFor="search" className='border rounded bg-blue-500 text-white p-2 cursor-pointer user-select-none'>search</label>
-            <input onChange={changeHandler} type="text" id='search' className='border rounded ml-2 p-2' />
+            <label htmlFor="search">search</label>
+            <input onChange={change} type="text" id='search' />
+            <p>result : {props?.searchTerm}</p>
+
+            <div style={{width: 300,height:200 , backgroundColor : `${props.searchTerm}`}}></div>
         </div>
     )
 }
-
 export default Search

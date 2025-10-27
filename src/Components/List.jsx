@@ -1,10 +1,9 @@
-import ListItem from "./ListItem"
+import Item from "./Item"
 
-const List = ({ list }) => {
-    // props : برای انتقال اطلاعات از کامپوننت پرنت به کامپوننت فرزند استفاده می شود
+const List = (props) => {
     return (
         <ul>
-            {list.map(item2 => <ListItem key={item2.id} Listitem={item2} />)}
+            {props.list.map(item => <Item key={item.id} item={item} />)}
         </ul>
 
     )
