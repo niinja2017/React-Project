@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import List from "./Components/List"
 import Search from "./Components/Search"
 
@@ -25,7 +25,7 @@ const App = () => {
     }
   ]
 
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('react')
 
   const handlerSearch = (event) => {
     setSearchTerm(event.target.value)
@@ -37,7 +37,7 @@ const App = () => {
   return (
     <>
       <div>
-        <Search onSearch={handlerSearch} />
+        <Search onSearch={handlerSearch} searchTerm={searchTerm} />
         <List list={filter} />
       </div>
     </>
