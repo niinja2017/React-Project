@@ -16,6 +16,12 @@ const App = () => {
       title: 'redux',
       url: 'www.redux.com',
       point: 8,
+    },
+    {
+      id: 3,
+      title: 'tailwind',
+      url: 'www.tailwindcss.com',
+      point: 8,
     }
   ]
 
@@ -25,12 +31,14 @@ const App = () => {
     setSearchTerm(event.target.value)
   }
 
+  const filter = stories.filter(story => story.title.includes(searchTerm.toLowerCase()))
+
 
   return (
     <>
-      <div className='w-full h-screen flex flex-col space-y-3 items-center justify-center'>
-        <List list={stories} />
-        <Search handlerSearch={handlerSearch} searchTerm={searchTerm}/>
+      <div>
+        <Search onSearch={handlerSearch} />
+        <List list={filter} />
       </div>
     </>
   )
