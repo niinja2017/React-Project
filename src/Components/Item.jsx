@@ -1,9 +1,9 @@
-const Item = (props) => {
+const Item = ({title , url , point}) => {
   return (
     <li>
-      <span>{props.item.title} </span>
-      <span>{props.item.url} </span>
-      <span>{props.item.point} </span>
+      <span>{title} </span>
+      <span>{url} </span>
+      <span>{point} </span>
     </li>
   )
 }

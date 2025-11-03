@@ -1,12 +1,12 @@
-const Search = (props) => {
+const Search = ({onSearch , searchTerm}) => {
 
     const change = (event) => {
-        props.onSearch(event)
+        onSearch(event)
     }
     return (
         <div>
             <label htmlFor="search">search</label>
-            <input onChange={change} value={props.searchTerm} type="text" id='search' />
+            <input onChange={change} value={searchTerm} type="text" id='search' />
         </div>
     )
 }
