@@ -1,11 +1,24 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import List from "./Components/List"
-import Search from "./Components/Search"
+import InputWithLabel from "./Components/InputWithLabel"
 import useStorageState from "./Hooks/useStorageState"
+
+// const myPromise = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve(5)
+//   }, 2000)
+// })
+
+// myPromise.then(result => {
+//   console.log(result)
+// },error => {
+//   console.log(error)
+// })
+
 
 const App = () => {
 
-  const stories = [
+  const initialStories = [
     {
       id: 1,
       title: 'react',
@@ -26,7 +39,27 @@ const App = () => {
     }
   ]
 
-  const [searchTerm, setSearchTerm] = useStorageState('search' , '')
+  const [stories, setStories] = useState([])
+
+  const getAsyncStory = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        data: { stories: initialStories }
+      })
+    }, 2000);
+  })
+
+  useEffect(() => {
+    getAsyncStory.then(result => {
+      setStories(result.data.stories)
+    }, error => {
+      console.log(error)
+    })
+  }, [])
+
+
+
+  const [searchTerm, setSearchTerm] = useStorageState('search', '')
 
   const handlerSearch = (event) => {
     setSearchTerm(event.target.value)
@@ -34,12 +67,16 @@ const App = () => {
 
   const filter = stories.filter(story => story.title.includes(searchTerm.toLowerCase()))
 
+  const handlerRemoveStory = (id) => {
+    const newStories = stories.filter(story => story.id !== id)
+    setStories(newStories)
+  }
 
   return (
     <>
       <div>
-        <Search onSearch={handlerSearch} searchTerm={searchTerm} />
-        <List list={filter} />
+        <InputWithLabel onSearch={handlerSearch} searchTerm={searchTerm} id="search" label="inputText" />
+        <List list={filter} removeHandle={handlerRemoveStory} />
       </div>
     </>
   )
