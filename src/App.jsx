@@ -1,6 +1,7 @@
 import { useState } from "react"
 import List from "./Components/List"
 import Search from "./Components/Search"
+import useStorageState from "./Hooks/useStorageState"
 
 const App = () => {
 
@@ -25,7 +26,7 @@ const App = () => {
     }
   ]
 
-  const [searchTerm, setSearchTerm] = useState('react')
+  const [searchTerm, setSearchTerm] = useStorageState('search' , '')
 
   const handlerSearch = (event) => {
     setSearchTerm(event.target.value)
