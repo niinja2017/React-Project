@@ -1,10 +1,10 @@
 import Item from "./Item"
 
-const List = ({list , removeHandle}) => {
+const List = ({list , removeItem}) => {
 
     return (
         <ul>
-            {list.map(item => <Item key={item.id} {...item} removeHandle={removeHandle}/>)}
+            {list.map(item => <Item key={item.id} {...item} removeHandle={removeItem}/>)}
         </ul>
 
     )
