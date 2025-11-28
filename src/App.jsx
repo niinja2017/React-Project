@@ -1,8 +1,38 @@
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer } from "react"
 import List from "./Components/List"
 import InputWithLabel from "./Components/InputWithLabel"
 import useStorageState from "./Hooks/useStorageState"
 
+const storiesReducer = (state, action) => {
+  switch (action.type) {
+    case 'Stories_Fetch_Init':
+      return {
+        ...state,
+        isLoading: true,
+        isError: false
+      }
+    case 'Stories_Fetch_Seccess':
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload
+      }
+    case 'Stories_Fetch_Faile':
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      }
+    case 'removeStories':
+      return {
+        ...state,
+        data: state.filter(story => story.id !== action.payload)
+      }
+
+    default: return state
+  }
+}
 
 const App = () => {
 
@@ -27,48 +57,38 @@ const App = () => {
     }
   ]
 
-  const [stories, setStories] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
 
-  const action = {
-    type: 'decrease',
-    peyload: 5
-  }
 
-  const counterReducer = (state, changeState) => {
-    switch (changeState.type) {
-      case 'increase':
-        return { ...state, state : state + action.peyload}
-      case 'decrease':
-        return { ...state, state : state - action.peyload}
+  // const [stories, setStories] = useState([])
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [isError, setIsError] = useState(false)
 
-      default: return state
-    }
-  }
+  const [stories, dispatchStories] = useReducer(storiesReducer, {
+    data: [],
+    isLoading: false,
+    isError: false
+  })
 
-  const result = (counterReducer(4, action))
-  console.log(result)
 
   const getAsyncStory = new Promise((resolve, reject) => {
     setTimeout(() => {
-      // resolve({ data: { stories: initialStories } })
       reject()
     }, 2000);
   })
 
   useEffect(() => {
-    setIsLoading(true)
+    dispatchStories({type: 'Stories_Fetch_Init'})
     getAsyncStory.then(result => {
-      setStories(result.data.stories)
-      setIsLoading(false)
-    }).catch((err) => setIsError(true))
+      dispatchStories({type: 'Stories_Fetch_Seccess', payload : initialStories})
+    }).catch((err) => dispatchStories({type: 'Stories_Fetch_Faile'}))
   }, [])
 
 
   const handlerRemoveStory = (id) => {
-    const newStories = stories.filter(story => story.id !== id)
-    setStories(newStories)
+    dispatchStories({
+      type: 'removeStories',
+      payload: id
+    })
   }
 
   const [searchTerm, setSearchTerm] = useStorageState('search', '')
@@ -77,7 +97,7 @@ const App = () => {
     setSearchTerm(event.target.value)
   }
 
-  const filter = stories.filter(story => story.title.includes(searchTerm.toLowerCase()))
+  const filter = stories.data.filter(story => story.title.includes(searchTerm.toLowerCase()))
 
 
   return (
@@ -86,11 +106,11 @@ const App = () => {
         <InputWithLabel onSearch={handlerSearch} searchTerm={searchTerm} id="search" label="inputText" />
 
         {
-          isError && <p>This is Error</p>
+          stories.isError && <p>This is Error</p>
         }
 
         {
-          isLoading
+          stories.isLoading
             ? <p>Loading .............</p>
             : <List list={filter} removeItem={handlerRemoveStory} />
         }
