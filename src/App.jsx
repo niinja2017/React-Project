@@ -27,7 +27,7 @@ const storiesReducer = (state, action) => {
     case 'removeStories':
       return {
         ...state,
-        data: state.filter(story => story.id !== action.payload)
+        data: state.data.filter(story => story.id !== action.payload)
       }
 
     default: return state
@@ -72,7 +72,7 @@ const App = () => {
 
   const getAsyncStory = new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject()
+      resolve()
     }, 2000);
   })
 
