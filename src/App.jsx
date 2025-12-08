@@ -33,6 +33,7 @@ const storiesReducer = (state, action) => {
     default: return state
   }
 }
+https://68c7e9885d8d9f5147338df4.mockapi.io/Exmaple
 
 const App = () => {
 
