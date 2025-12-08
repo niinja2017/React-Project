@@ -57,6 +57,19 @@ const App = () => {
     }
   ]
 
+  function numberInput(input) {
+    try {
+      if(isNaN(input)){
+        throw new Error("این ورودی معتبر نیست");
+      }
+
+      console.log('ورودی معتبر است' , input)
+    } catch (error) {
+      console.log('خطا' , error.message)
+    }
+  }
+
+  numberInput(3)
 
 
   // const [stories, setStories] = useState([])
